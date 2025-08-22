@@ -1,0 +1,38 @@
+# See: https://asimov-specs.github.io/module-manifest/
+---
+name: asimov-x-module
+label: ASIMOV X Module
+summary: Data import powered by the X platform via official API endpoints.
+links:
+  - https://github.com/asimov-modules/asimov-x-module
+  - https://crates.io/crates/asimov-x-module
+
+provides:
+  programs:
+    asimov-x-cataloger:
+      description: "Fetch X list members from X API"
+      arguments:
+        - name: "COMMAND"
+          description: "Subcommand to execute"
+          required: true
+          values: ["get-list-members"]
+        - name: "URL"
+          description: "X list URL (e.g., https://x.com/i/lists/random_string)"
+          required: true
+      options:
+        - name: "limit"
+          description: "Maximum number of members to fetch"
+          short: "l"
+          long: "limit"
+          type: "integer"
+        - name: "output"
+          description: "Output format (json or jsonl)"
+          short: "o"
+          long: "output"
+          type: "string"
+          default: "jsonl"
+          values: ["json", "jsonl"]
+
+handles:
+  url_prefixes:
+    - https://x.com/i/lists/
