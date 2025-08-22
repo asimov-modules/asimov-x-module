@@ -8,9 +8,8 @@ pub static X_LIST_MEMBERS: Provider = Provider {
     url: "https://x.com/i/lists",
 };
 
-pub static URL_PREFIX_TO_PROVIDER: [(&str, &'static Provider); 1] = [
-    ("https://x.com/i/lists", &X_LIST_MEMBERS),
-];
+pub static URL_PREFIX_TO_PROVIDER: [(&str, &'static Provider); 1] =
+    [("https://x.com/i/lists", &X_LIST_MEMBERS)];
 
 pub fn extract_list_id_from_url(url: &str) -> Option<String> {
     // Extract ID from URLs like: https://x.com/i/lists/random_string

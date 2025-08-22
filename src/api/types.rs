@@ -177,5 +177,3 @@ pub struct XListMeta {
     pub next_token: Option<String>,
     pub previous_token: Option<String>,
 }
-
-

@@ -39,5 +39,3 @@ fn test_x_list_jq_with_sample_data() {
     let result = filter.filter_json(sample_data);
     assert!(result.is_ok());
 }
-
-

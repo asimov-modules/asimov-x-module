@@ -1,8 +1,8 @@
 // This is free and unencumbered software released into the public domain.
 
+use asimov_module::SysexitsError::{self, *};
 use asimov_x_module::api::x::XClient;
 use asimov_x_module::providers::x::extract_list_id_from_url;
-use asimov_module::SysexitsError::{self, *};
 use clap::{Parser, Subcommand};
 use clientele::StandardOptions;
 use std::error::Error;
@@ -53,7 +53,10 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
             let output_format = if output == "json" || output == "jsonl" {
                 output
             } else {
-                eprintln!("Warning: Invalid output format '{}'. Using 'jsonl' instead.", output);
+                eprintln!(
+                    "Warning: Invalid output format '{}'. Using 'jsonl' instead.",
+                    output
+                );
                 "jsonl".to_string()
             };
 
@@ -62,11 +65,12 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
 
             let client = XClient::new()?;
             let api_response = client.fetch_list_members(&list_id, limit)?;
-            
+
             let filter = asimov_x_module::jq::x_list();
-            let transformed = filter.filter_json(serde_json::to_value(api_response)?)
+            let transformed = filter
+                .filter_json(serde_json::to_value(api_response)?)
                 .map_err(|e| anyhow::anyhow!("JQ filter error: {}", e))?;
-            
+
             match output_format.as_str() {
                 "jsonl" => {
                     if let Some(members) = transformed["members"]["items"].as_array() {
@@ -74,7 +78,7 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
                             println!("{}", serde_json::to_string(member)?);
                         }
                     }
-                }
+                },
                 "json" => {
                     if cfg!(feature = "pretty") {
                         colored_json::write_colored_json(&transformed, &mut std::io::stdout())?;
@@ -82,20 +86,20 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
                     } else {
                         println!("{}", serde_json::to_string(&transformed)?);
                     }
-                }
+                },
                 _ => {
                     if let Some(members) = transformed["members"]["items"].as_array() {
                         for member in members {
                             println!("{}", serde_json::to_string(member)?);
                         }
                     }
-                }
+                },
             };
-        }
+        },
         None => {
             eprintln!("No command specified. Use --help for usage information.");
             return Ok(EX_USAGE);
-        }
+        },
     }
 
     Ok(EX_OK)

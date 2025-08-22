@@ -14,7 +14,7 @@ impl XConfig {
     pub fn new() -> Result<Self> {
         let access_token = env::var("X_TOKEN")
             .map_err(|_| anyhow::anyhow!("X_TOKEN environment variable not set"))?;
-        
+
         Ok(Self {
             base_url: "https://api.x.com/2".to_string(),
             access_token,
@@ -40,11 +40,14 @@ impl XClient {
         format!("Bearer {}", self.config.access_token)
     }
 
-    pub fn fetch_list_members(&self, list_id: &str, limit: Option<usize>) -> Result<XListMembersResponse> {
+    pub fn fetch_list_members(
+        &self,
+        list_id: &str,
+        limit: Option<usize>,
+    ) -> Result<XListMembersResponse> {
         let mut url = format!(
             "{}/lists/{}/members?user.fields=id,name,username,description,location,profile_image_url,profile_banner_url,verified,protected,created_at,public_metrics",
-            self.config.base_url,
-            list_id
+            self.config.base_url, list_id
         );
 
         if let Some(limit_val) = limit {
@@ -64,7 +67,8 @@ impl XClient {
                 }
             })?;
 
-        let response_body: XListMembersResponse = serde_json::from_str(&response.body_mut().read_to_string()?)?;
+        let response_body: XListMembersResponse =
+            serde_json::from_str(&response.body_mut().read_to_string()?)?;
         Ok(response_body)
     }
 }
