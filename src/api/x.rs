@@ -44,11 +44,11 @@ impl XClient {
         &self,
         list_id: &str,
         limit: Option<usize>,
-    ) -> Result<XListMembersResponse> { 
+    ) -> Result<XListMembersResponse> {
         if limit.is_none() {
             return self.fetch_all_list_members(list_id);
         }
-        
+
         self.fetch_list_members_page(list_id, limit, None)
     }
 
@@ -58,13 +58,13 @@ impl XClient {
 
         loop {
             let response = self.fetch_list_members_page(list_id, None, next_token.as_deref())?;
-            
+
             if let Some(users) = response.data {
                 all_users.extend(users);
             }
 
             next_token = response.meta.and_then(|meta| meta.next_token);
-            
+
             if next_token.is_none() {
                 break;
             }
