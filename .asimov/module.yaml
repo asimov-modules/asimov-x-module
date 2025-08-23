@@ -9,25 +9,7 @@ links:
 
 provides:
   programs:
-    asimov-x-cataloger:
-      description: "Fetch X list members from X API"
-      arguments:
-        - name: "URL"
-          description: "X list URL (e.g., https://x.com/i/lists/1234567890)"
-          required: true
-      options:
-        - name: "limit"
-          description: "Maximum number of members to fetch"
-          short: "l"
-          long: "limit"
-          type: "integer"
-        - name: "output"
-          description: "Output format (json or jsonl)"
-          short: "o"
-          long: "output"
-          type: "string"
-          default: "jsonl"
-          values: ["json", "jsonl"]
+    - asimov-x-cataloger
 
 handles:
   url_prefixes:
