@@ -3,7 +3,7 @@
 use asimov_module::SysexitsError::{self, *};
 use asimov_x_module::api::x::XClient;
 use asimov_x_module::providers::x::extract_list_id_from_url;
-use clap::{Parser, Subcommand};
+use clap::Parser;
 use clientele::StandardOptions;
 use std::error::Error;
 
@@ -12,22 +12,16 @@ struct Options {
     #[clap(flatten)]
     flags: StandardOptions,
 
-    #[clap(subcommand)]
-    command: Option<Commands>,
-}
+    /// X list URL to catalog
+    url: Option<String>,
 
-#[derive(Debug, Subcommand)]
-enum Commands {
-    #[clap(about = "Catalog X list members from a list URL.")]
-    GetListMembers {
-        url: String,
+    /// Limit the number of members to fetch
+    #[clap(short, long)]
+    limit: Option<usize>,
 
-        #[clap(short, long)]
-        limit: Option<usize>,
-
-        #[clap(short, long, default_value = "jsonl")]
-        output: String,
-    },
+    /// Output format (json or jsonl)
+    #[clap(short, long, default_value = "jsonl")]
+    output: String,
 }
 
 pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
@@ -45,62 +39,60 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
         return Ok(EX_OK);
     }
 
+    // Check if URL is provided
+    let url = options.url.ok_or_else(|| {
+        eprintln!("Error: URL is required. Use --help for usage information.");
+        EX_USAGE
+    })?;
+
     #[cfg(feature = "tracing")]
     asimov_module::init_tracing_subscriber(&options.flags).expect("failed to initialize logging");
 
-    match options.command {
-        Some(Commands::GetListMembers { url, limit, output }) => {
-            let output_format = if output == "json" || output == "jsonl" {
-                output
+    let output_format = if options.output == "json" || options.output == "jsonl" {
+        options.output
+    } else {
+        eprintln!(
+            "Warning: Invalid output format '{}'. Using 'jsonl' instead.",
+            options.output
+        );
+        "jsonl".to_string()
+    };
+
+    let list_id = extract_list_id_from_url(&url)
+        .ok_or_else(|| anyhow::anyhow!("Invalid X list URL: {}", url))?;
+
+    let client = XClient::new()?;
+    let api_response = client.fetch_list_members(&list_id, options.limit)?;
+
+    let filter = asimov_x_module::jq::x_list();
+    let transformed = filter
+        .filter_json(serde_json::to_value(api_response)?)
+        .map_err(|e| anyhow::anyhow!("JQ filter error: {}", e))?;
+
+    match output_format.as_str() {
+        "jsonl" => {
+            if let Some(members) = transformed["members"]["items"].as_array() {
+                for member in members {
+                    println!("{}", serde_json::to_string(member)?);
+                }
+            }
+        },
+        "json" => {
+            if cfg!(feature = "pretty") {
+                colored_json::write_colored_json(&transformed, &mut std::io::stdout())?;
+                println!();
             } else {
-                eprintln!(
-                    "Warning: Invalid output format '{}'. Using 'jsonl' instead.",
-                    output
-                );
-                "jsonl".to_string()
-            };
-
-            let list_id = extract_list_id_from_url(&url)
-                .ok_or_else(|| anyhow::anyhow!("Invalid X list URL: {}", url))?;
-
-            let client = XClient::new()?;
-            let api_response = client.fetch_list_members(&list_id, limit)?;
-
-            let filter = asimov_x_module::jq::x_list();
-            let transformed = filter
-                .filter_json(serde_json::to_value(api_response)?)
-                .map_err(|e| anyhow::anyhow!("JQ filter error: {}", e))?;
-
-            match output_format.as_str() {
-                "jsonl" => {
-                    if let Some(members) = transformed["members"]["items"].as_array() {
-                        for member in members {
-                            println!("{}", serde_json::to_string(member)?);
-                        }
-                    }
-                },
-                "json" => {
-                    if cfg!(feature = "pretty") {
-                        colored_json::write_colored_json(&transformed, &mut std::io::stdout())?;
-                        println!();
-                    } else {
-                        println!("{}", serde_json::to_string(&transformed)?);
-                    }
-                },
-                _ => {
-                    if let Some(members) = transformed["members"]["items"].as_array() {
-                        for member in members {
-                            println!("{}", serde_json::to_string(member)?);
-                        }
-                    }
-                },
-            };
+                println!("{}", serde_json::to_string(&transformed)?);
+            }
         },
-        None => {
-            eprintln!("No command specified. Use --help for usage information.");
-            return Ok(EX_USAGE);
+        _ => {
+            if let Some(members) = transformed["members"]["items"].as_array() {
+                for member in members {
+                    println!("{}", serde_json::to_string(member)?);
+                }
+            }
         },
-    }
+    };
 
     Ok(EX_OK)
 }

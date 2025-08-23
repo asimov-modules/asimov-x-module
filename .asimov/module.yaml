@@ -12,12 +12,8 @@ provides:
     asimov-x-cataloger:
       description: "Fetch X list members from X API"
       arguments:
-        - name: "COMMAND"
-          description: "Subcommand to execute"
-          required: true
-          values: ["get-list-members"]
         - name: "URL"
-          description: "X list URL (e.g., https://x.com/i/lists/random_string)"
+          description: "X list URL (e.g., https://x.com/i/lists/1234567890)"
           required: true
       options:
         - name: "limit"

@@ -8,10 +8,10 @@ ASIMOV module for importing data from X (Twitter) lists and converting it to JSO
 ## ✨ Features
 
 🐦 **Import List Members**: Fetch and convert X list members to JSON-LD
- **User Profiles**: Complete user data including metrics and profile information
+🔄 **User Profiles**: Complete user data including metrics and profile information
 🔄 **JSON-LD Output**: Structured data compatible with KNOW ontology
 ⚡ **Fast & Reliable**: Built with Rust for performance and safety
- **Rate Limit Aware**: Respects X API limits and provides clear error handling
+📊 **Rate Limit Aware**: Respects X API limits and provides clear error handling
 📊 **Flexible Output**: Support for both JSON and JSONL formats
 🔢 **Pagination Control**: Limit results with `--limit` option
 
@@ -36,13 +36,13 @@ cargo install asimov-x-module
 
 ```bash
 # Import all list members (default JSONL output)
-asimov-x-cataloger get-list-members "https://x.com/i/lists/${random_string}"
+asimov-x-cataloger "https://x.com/i/lists/1234567890"
 
 # Import first 100 members only
-asimov-x-cataloger get-list-members "https://x.com/i/lists/${random_string}" --limit 100
+asimov-x-cataloger "https://x.com/i/lists/1234567890" --limit 100
 
 # Output in JSON format instead of JSONL
-asimov-x-cataloger get-list-members "https://x.com/i/lists/${random_string}" --limit 100 --output json
+asimov-x-cataloger "https://x.com/i/lists/1234567890" --limit 100 --output json
 ```
 
 ### Other Commands
