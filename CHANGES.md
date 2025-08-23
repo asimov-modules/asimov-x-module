@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.2 - 2025-08-23
+
+### Changed
+
+- Fixed manifest
+
 ## [0.2.1] - 2025-08-23
 
 ### Changed
@@ -22,11 +28,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Migration
 
 **Old usage:**
+
 ```bash
 asimov-x-cataloger get-list-members "https://x.com/i/lists/1234567890" --limit 100
 ```
 
 **New usage:**
+
 ```bash
 asimov-x-cataloger "https://x.com/i/lists/1234567890" --limit 100
 ```
@@ -64,5 +72,7 @@ asimov-x-cataloger "https://x.com/i/lists/1234567890" --limit 100
 
   - JSONL: One user per line (default, pipe-friendly)
   - JSON: Complete structured data with semantic context
+
 - **Rate Limiting**: Handles X API rate limits gracefully
 - **Error Handling**: Clear error messages for common API issues
+

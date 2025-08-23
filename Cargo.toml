@@ -2,7 +2,7 @@
 
 [package]
 name = "asimov-x-module"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["ASIMOV Community"]
 edition = "2024"
 #rust-version = "1.85"
@@ -54,5 +54,3 @@ lto = "thin"
 name = "asimov-x-cataloger"
 path = "src/cataloger/main.rs"
 required-features = ["cli"]
-
-
