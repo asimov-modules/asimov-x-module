@@ -28,11 +28,6 @@ ASIMOV module for importing data from X (Twitter) lists and converting it to JSO
 ```bash
 # From Cargo (Rust)
 cargo install asimov-x-module
-
-# From source
-git clone https://github.com/asimov-modules/asimov-x-module.git
-cd asimov-x-module
-cargo build --release
 ```
 
 ## 👉 Examples
@@ -83,13 +78,30 @@ Get your API token from: [X Developer Portal](https://developer.x.com/)
 
 ### Rate Limiting
 
-Heads up: This module plays nice with X's API limits. If you get HTTP 429 errors (too many requests):
+⚠️ **IMPORTANT**: X API has strict rate limits that vary by subscription plan.
 
-- **Just wait a bit**: The API will throw an error if you're going too fast
-- **No auto-retry**: We don't automatically retry failed requests  
-- **Take it slow**: If you're grabbing lots of data, give it some breathing room
+#### **Free Plan**
 
-The limits: X API has rate limits that vary by endpoint and authentication level.
+- **Maximum users per request**: 100 users only
+- **Request frequency**: 1 request every 15 minutes
+- **Error**: Returns HTTP 429 if you try within 15-minute window
+- **Pagination**: Limited to single page (100 users max)
+
+#### **Basic Plan**
+
+- **Maximum users per request**: 100 users
+- **Request frequency**: 5 requests per 15 minutes (per user)
+- **App-wide limits**: 25 requests per 15 minutes (per app)
+- **Pagination**: Can handle multiple pages with delays
+
+#### **Pro Plan**
+
+- **Maximum users per request**: 100 users
+- **Request frequency**: 900 requests per 15 minutes (per user)
+- **App-wide limits**: 900 requests per 15 minutes (per app)
+- **Pagination**: Can handle large lists efficiently
+
+**Free plan users**: Use `--limit=100` and wait 15 minutes between requests.
 
 ## 👨‍💻 Development
 

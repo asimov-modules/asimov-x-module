@@ -44,6 +44,43 @@ impl XClient {
         &self,
         list_id: &str,
         limit: Option<usize>,
+    ) -> Result<XListMembersResponse> { 
+        if limit.is_none() {
+            return self.fetch_all_list_members(list_id);
+        }
+        
+        self.fetch_list_members_page(list_id, limit, None)
+    }
+
+    fn fetch_all_list_members(&self, list_id: &str) -> Result<XListMembersResponse> {
+        let mut all_users = Vec::new();
+        let mut next_token: Option<String> = None;
+
+        loop {
+            let response = self.fetch_list_members_page(list_id, None, next_token.as_deref())?;
+            
+            if let Some(users) = response.data {
+                all_users.extend(users);
+            }
+
+            next_token = response.meta.and_then(|meta| meta.next_token);
+            
+            if next_token.is_none() {
+                break;
+            }
+        }
+
+        Ok(XListMembersResponse {
+            data: Some(all_users),
+            meta: None,
+        })
+    }
+
+    fn fetch_list_members_page(
+        &self,
+        list_id: &str,
+        limit: Option<usize>,
+        pagination_token: Option<&str>,
     ) -> Result<XListMembersResponse> {
         let mut url = format!(
             "{}/lists/{}/members?user.fields=id,name,username,description,location,profile_image_url,profile_banner_url,verified,protected,created_at,public_metrics",
@@ -52,6 +89,10 @@ impl XClient {
 
         if let Some(limit_val) = limit {
             url.push_str(&format!("&max_results={}", limit_val));
+        }
+
+        if let Some(token) = pagination_token {
+            url.push_str(&format!("&pagination_token={}", token));
         }
 
         let mut response = ureq::get(&url)
