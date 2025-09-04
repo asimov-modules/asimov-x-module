@@ -3,17 +3,17 @@
 [![Package on Crates.io](https://img.shields.io/crates/v/asimov-x-module)](https://crates.io/crates/asimov-x-module)
 [![Documentation](https://docs.rs/asimov-x-module/badge.svg)](https://docs.rs/asimov-x-module)
 
-ASIMOV module for importing data from X (Twitter) lists and converting it to JSON-LD format.
+[ASIMOV] module for importing data from [X](https://x.com) (Twitter) lists and converting it to [JSON-LD] format.
 
 ## ✨ Features
 
-🐦 **Import List Members**: Fetch and convert X list members to JSON-LD
-🔄 **User Profiles**: Complete user data including metrics and profile information
-🔄 **JSON-LD Output**: Structured data compatible with KNOW ontology
-⚡ **Fast & Reliable**: Built with Rust for performance and safety
-📊 **Rate Limit Aware**: Respects X API limits and provides clear error handling
-📊 **Flexible Output**: Support for both JSON and JSONL formats
-🔢 **Pagination Control**: Limit results with `--limit` option
+- 🐦 **Import List Members**: Fetch and convert X list members to [JSON-LD]
+- 🔄 **User Profiles**: Complete user data including metrics and profile information
+- 🔄 **JSON-LD Output**: Structured data compatible with KNOW ontology
+- ⚡ **Fast & Reliable**: Built with Rust for performance and safety
+- 📊 **Rate Limit Aware**: Respects [X API] limits and provides clear error handling
+- 📊 **Flexible Output**: Support for both JSON and JSONL formats
+- 🔢 **Pagination Control**: Limit results with `--limit` option
 
 ## 🛠️ Prerequisites
 
@@ -78,7 +78,7 @@ Get your API token from: [X Developer Portal](https://developer.x.com/)
 
 ### Rate Limiting
 
-⚠️ **IMPORTANT**: X API has strict rate limits that vary by subscription plan.
+⚠️ **IMPORTANT**: [X API] has strict rate limits that vary by subscription plan.
 
 #### **Free Plan**
 
@@ -134,12 +134,10 @@ cargo build --bin asimov-x-cataloger
 }
 ```
 
-## Links
-
-- [ASIMOV]: https://github.com/asimov-modules
-- [JSON-LD]: https://json-ld.org/
-- [X API]: https://developer.x.com/
-
 ## 📄 License
 
 This project is licensed under the Unlicense - see the [UNLICENSE](UNLICENSE) file for details.
+
+[ASIMOV]: https://github.com/asimov-modules
+[JSON-LD]: https://json-ld.org/
+[X API]: https://developer.x.com/
