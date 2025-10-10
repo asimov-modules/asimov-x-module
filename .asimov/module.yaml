@@ -1,7 +1,8 @@
 # See: https://asimov-specs.github.io/module-manifest/
 ---
 name: x
-label: ASIMOV X Module
+label: X
+title: ASIMOV X Module
 summary: Data import powered by the X platform via official API endpoints.
 links:
   - https://github.com/asimov-modules/asimov-x-module
