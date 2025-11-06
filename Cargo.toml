@@ -33,15 +33,14 @@ jq = "0.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 anyhow = "1.0"
-colored_json = "2.1"
 
 # Optional integrations:
 clap = { version = "4.5", default-features = false, features = [
-    "std",
+  "std",
 ], optional = true }
 clientele = { version = "0.3.8", default-features = false, features = [
-    "clap",
-    "std",
+  "clap",
+  "std",
 ], optional = true }
 ureq = "3.1.0"
 

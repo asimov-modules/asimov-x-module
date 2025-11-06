@@ -73,22 +73,17 @@ pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
         "jsonl" => {
             if let Some(members) = transformed["members"]["items"].as_array() {
                 for member in members {
-                    println!("{}", serde_json::to_string(member)?);
+                    println!("{}", member);
                 }
             }
         },
         "json" => {
-            if cfg!(feature = "pretty") {
-                colored_json::write_colored_json(&transformed, &mut std::io::stdout())?;
-                println!();
-            } else {
-                println!("{}", serde_json::to_string(&transformed)?);
-            }
+            println!("{}", transformed);
         },
         _ => {
             if let Some(members) = transformed["members"]["items"].as_array() {
                 for member in members {
-                    println!("{}", serde_json::to_string(member)?);
+                    println!("{}", member);
                 }
             }
         },
