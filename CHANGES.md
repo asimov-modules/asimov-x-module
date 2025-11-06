@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.4 - 2025-11-06
+
+### Changed
+
+- Remove `colored_json` use
+
+### Fixed
+
+- Fix module manifest
+
 ## 0.2.3 - 2025-08-23
 
 ### Changed
@@ -75,10 +85,8 @@ asimov-x-cataloger "https://x.com/i/lists/1234567890" --limit 100
 - **Authentication**: Uses `X_TOKEN` environment variable for API access
 - **Data Processing**: Fetches list members with full user profiles and metrics
 - **Output Formats**:
-
   - JSONL: One user per line (default, pipe-friendly)
   - JSON: Complete structured data with semantic context
 
 - **Rate Limiting**: Handles X API rate limits gracefully
 - **Error Handling**: Clear error messages for common API issues
-

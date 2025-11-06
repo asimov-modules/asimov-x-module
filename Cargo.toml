@@ -2,7 +2,7 @@
 
 [package]
 name = "asimov-x-module"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["ASIMOV Community"]
 edition = "2024"
 #rust-version = "1.85"
