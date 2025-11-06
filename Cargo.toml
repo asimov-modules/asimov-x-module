@@ -14,7 +14,7 @@ repository = "https://github.com/asimov-modules/asimov-template-module"
 license = "Unlicense"
 keywords = ["asimov-module", "asimov", "ai"]
 categories = ["command-line-utilities", "text-processing"]
-publish = false
+publish = true
 
 [features]
 default = ["all", "cli", "std"]
